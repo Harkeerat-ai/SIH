@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sihvision"
+version = "0.1.0"
+description = "Config-driven satellite image recognition pipeline for SIH (classification, detection, segmentation, change detection)"
+requires-python = ">=3.11"
+dependencies = [
+    "torch>=2.2",
+    "torchvision>=0.17",
+    "numpy",
+    "pillow",
+    "pyyaml",
+    "tifffile",
+]
+
+[project.optional-dependencies]
+api = [
+    "fastapi",
+    "uvicorn",
+    "python-multipart",
+    "httpx",
+]
+dev = [
+    "pytest",
+    "pytest-cov",
+]
+
+[project.scripts]
+check-data = "sihvision.cli.check_data:main"
+
+[tool.setuptools.packages.find]
+include = ["sihvision*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
