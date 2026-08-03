@@ -8,6 +8,7 @@ VALID_FORMATS = {
     "yolo",
     "mask_segmentation",
     "change_detection",
+    "regression",
 }
 VALID_BACKBONES = {
     "resnet18",
@@ -27,7 +28,7 @@ TASK_FORMATS = {
     "detection": {"yolo"},
     "segmentation": {"mask_segmentation"},
     "change_detection": {"change_detection"},
-    "regression": {"mask_segmentation"},
+    "regression": {"regression"},
 }
 
 

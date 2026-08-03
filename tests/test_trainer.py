@@ -90,17 +90,35 @@ def test_train_segmentation_loss_decreases(tmp_path):
     assert history["train"][-1] <= history["train"][0] + 1e-6
 
 
-def test_train_change_detection(tmp_path):
+def test_train_regression_loss_decreases(tmp_path):
+    import numpy as np
+    from PIL import Image
+
+    import torch as torch_mod
+
     from sihvision.data.build import build_dataset
     from sihvision.train import train
-    from tests.fixtures.generate_synthetic import make_change_detection
 
-    make_change_detection(tmp_path, n_images=6, size=32, n_classes=2)
-    ds = build_dataset(
-        "change_detection", "change_detection", tmp_path,
-        split="train", channels=3,
+    torch_mod.manual_seed(0)
+    img_dir = tmp_path / "train" / "images"
+    img_dir.mkdir(parents=True)
+    rng = np.random.default_rng(2)
+    lines = []
+    for i in range(8):
+        value = 0.1 + 0.1 * i  # learnable: brightness encodes target
+        arr = np.full((32, 32, 3), int(value * 255), dtype=np.uint8)
+        arr = arr + rng.integers(-5, 5, arr.shape, dtype=np.int16)
+        Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8)).save(
+            img_dir / f"img_{i}.png"
+        )
+        lines.append(f"img_{i},{value:.3f}")
+    (tmp_path / "train" / "labels.csv").write_text(
+        "image_id,value\n" + "\n".join(lines), encoding="utf-8"
     )
-    cfg = {"task": "change_detection", "model": {"backbone": "resnet18"}, "data": {}, "train": {"epochs": 2, "lr": 1e-3}}
-    model = build_model(cfg, num_classes=2)
+
+    ds = build_dataset("regression", "regression", tmp_path, split="train", channels=3)
+    cfg = {"task": "regression", "model": {"backbone": "resnet18"}, "data": {}, "train": {"epochs": 3, "lr": 1e-5}}
+    model = build_model(cfg, num_classes=1)
     history = train(cfg, model, ds)
-    assert len(history["train"]) == 2
+    assert len(history["train"]) == 3
+    assert history["train"][-1] <= history["train"][0] + 1e-6
