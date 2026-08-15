@@ -1,0 +1,51 @@
+SIHVISION - THE TEAM EXPLAINER
+(Everything you need to explain this idea in 2 minutes)
+
+
+THE ONE-LINER
+sihvision is a ready-made "satellite image brain" toolkit - one config file
+switches it between five different vision tasks, and it can explain WHY it
+made each decision.
+
+WHY IT MATTERS
+Government agencies receive huge numbers of satellite images but can't
+afford humans to look at every pixel. We give them software that looks
+automatically, and - critically - can justify its answer, which is what
+authorities need before acting on it.
+
+HOW IT WORKS - THE ANALOGY
+Imagine a student who is trained to recognise things in photos: "this is
+forest, this is water, this is a building." The student can also show its
+working - it circles the exact part of the photo that made it decide. That
+circle is called a saliency map. sihvision is that student, plus a
+swappable exam paper: change one settings file and it goes from "identify
+objects" to "measure cyclone strength" without rewriting any code.
+
+WHAT WE'RE BUILDING (simple pipeline)
+1. Feed in satellite images (or synthetic test images while we develop).
+2. The model (a neural network) processes them and predicts: class /
+   objects / region outlines / changes between two dates / a number.
+3. An explanation step highlights which pixels drove the prediction.
+4. A dashboard shows prediction + explanation side by side.
+5. A web API lets anyone send an image and get the answer back.
+
+THE DEMO STORY
+A judge uploads a satellite scene. The screen shows the prediction (e.g.
+"urban area, 91% confidence") AND a heatmap glowing over the exact
+buildings that caused it. The judge asks "why?" - and the system answers
+visually, not with a black box.
+
+TECH, DECODED
+- Neural network: a pattern-matcher brain trained on examples.
+- XAI / saliency / Grad-CAM: techniques that reveal which pixels mattered.
+- FastAPI: the web waiter that takes requests and returns answers.
+- YAML config: a settings file that changes the brain's task.
+- The project already has 129 passing tests and an end-to-end demo.
+
+KEY TALKING POINTS (say these with confidence)
+1. "One config file, five tasks - classification, detection, segmentation,
+   change detection, regression."
+2. "It explains its reasoning, not just its answer - XAI built in."
+3. "It's already working: trained demo, tests, API, dashboard."
+4. "This is the reusable foundation - any of our three problem statements
+   can build on this pipeline."

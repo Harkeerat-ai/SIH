@@ -1,0 +1,48 @@
+# sihvision — Live Health Check Report (2026-08-07)
+
+## 1. Test suite (pytest, in-process)
+Command: `python -m pytest -v`
+Result: **129 passed, 2 warnings in 37.50s** — no failures, no skips.
+
+Warnings (non-fatal):
+- StarletteDeprecationWarning: `httpx` vs `starlette.testclient` (install `httpx2` to silence)
+- tifffile DeprecationWarning on uint16 multi-plane RGB TIFF writing in fixtures
+
+## 2. Random-data end-to-end smoke (unseeded RNG, all 5 formats)
+`tools/random_smoke.py` — 9/9 checks passed on **cuda:0**:
+- classification: train loss decreases, predict + Grad-CAM saliency + dashboard HTML
+- regression: train finite MSE
+- segmentation (n_classes=4): train loss 1.83 -> 0.89
+- change detection: train loss 0.46 -> 0.31
+- detection: YOLO loader parses boxes; trainer raises `NotImplementedError` (known gap, marked FAILURE)
+- check-data CLI on random root: rc=0
+
+## 3. Live real-`uvicorn` server (`tools/live_serve.py`)
+Fresh random classification data (water/urban/forest/barren, 48px) -> 3 epochs on
+CUDA (loss 2.51 -> 1.42) -> `register_model` with trained state_dict -> uvicorn
+`http://127.0.0.1:8000` booted clean (see tools/live_serve_server.log).
+Server shut down cleanly after validation; port 8000 released.
+
+## 4. Health verdict
+
+| Area | Status |
+|---|---|
+| config | PASS |
+| loaders (class/yolo/seg/change/regression) | PASS (loader only) |
+| transforms / split / build | PASS |
+| backbones / heads / registry | PASS |
+| trainer (class/seg/change/regression) | PASS (CUDA) |
+| detection trainer | **FAILURE** — `NotImplementedError` stub (YOLO not wired) |
+| XAI (Grad-CAM / vanilla) | PASS |
+| dashboard / CLI (check-data) | PASS |
+| FastAPI (real uvicorn boot + model register) | PASS |
+| CUDA | PASS (torch 2.5.1+cu121, RTX 3050) |
+
+Overall: **green** for all but detection training. Known non-fail gaps:
+pretrained weights (`weights=None`), no real satellite data yet, 129-testsuite
+not in CI.
+
+## 5. Save-for-transfer artifacts
+- Repo modified: `sihvision/api/app.py` (+`app = create_app()`, uncommitted)
+- Untracked: `demo_data/`, `demo_out/`, `server_err.log`, `server_out.log`
+- New this run: `tools/random_smoke.py`, `tools/live_serve.py`, run logs

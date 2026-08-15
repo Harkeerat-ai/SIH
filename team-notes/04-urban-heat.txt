@@ -1,0 +1,64 @@
+URBAN HEAT ISLAND & MICROCLIMATE MITIGATION - THE TEAM EXPLAINER
+(Everything you need to explain this idea in 2 minutes)
+
+
+THE ONE-LINER
+We map the city's "fever" from space, rank which neighbourhoods are worst
+off, and tell the government exactly where to plant trees and paint roofs
+so every rupee of public money cools the most people.
+
+WHY IT MATTERS
+Cities are hotter than the countryside - concrete and asphalt soak up the
+sun, and heat waves now kill more people than floods and storms in Indian
+cities. Officials want to act, but where should a limited budget go? Our
+system answers that question with data instead of guesswork.
+
+HOW IT WORKS - THE ANALOGY
+A satellite carries a thermometer: it measures the actual surface
+temperature of every street and roof. We draw a "fever map" of the city -
+hot spots glow red. But temperature alone isn't the whole story: a hot
+empty industrial park matters less than a hot crowded slum. So we combine
+heat with who lives there (population, elderly), how little green cover
+exists, and how built-up the area is, into one vulnerability score 0-100.
+Then, like a shopper comparing prices, we compute what cools the city most
+per rupee: a tree costs Rs 1,200 and cools a 25 m2 patch; a cool roof
+reflects the sun; reflective pavement does the same for roads. The system
+picks the best combination for each hot zone within the budget.
+
+WHAT WE'RE BUILDING (simple pipeline)
+1. Landsat passes every 16 days; thermal bands are converted into a
+   real land surface temperature map (with the physics worked out).
+2. We compute greenness, built-up density, water and population per zone.
+3. A transparent formula (temperature 40%, green deficit 20%, people
+   15%, buildings 10%, plus elderly, roads, water) scores each zone 0-100.
+4. For every hot zone, an optimizer recommends interventions - cool
+   roofs, trees, reflective pavement - ranked by benefit per rupee.
+5. A simulator lets officials test "what if we plant 1,000 trees here?"
+   and see the estimated temperature drop before spending anything.
+
+THE DEMO STORY
+A judge sees the city map glowing red in a hotspot: 43.8C, 7% green cover,
+82% buildings. One click generates a mitigation plan - 18,000 m2 cool
+roofs, 1,200 trees, 4,500 m2 pavement at Rs 97.65 lakh - with an estimated
+2.1C cooling and the vulnerability score dropping from 87 to 69. Another
+click simulates a bigger tree budget and the map updates live.
+
+TECH, DECODED
+- Land Surface Temperature (LST): real ground heat from satellite
+  thermal sensors, using known physics (radiation math).
+- NDVI / NDBI: greenness and built-up scores from photo colors.
+- Vulnerability score: a transparent weighted points formula - every
+  point can be explained to a planner.
+- Optimizer: a budget-shopping algorithm (knapsack style) that picks
+  interventions by benefit-per-rupee.
+- Simulator: re-runs the same math with your "what if" inputs - results
+  are labeled estimates, not guarantees.
+
+KEY TALKING POINTS (say these with confidence)
+1. "We map real surface temperature from space, not weather-station
+   guesses."
+2. "Score combines heat + people + missing greenery - hot is bad, hot
+   and crowded is urgent."
+3. "Optimizer tells government where each rupee cools the most people."
+4. "Simulator lets officials test interventions before spending -
+   'model estimate, not guaranteed outcome' keeps it honest."

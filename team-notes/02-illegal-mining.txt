@@ -1,0 +1,54 @@
+ILLEGAL MINING & ENCROACHMENT EARLY WARNING - THE TEAM EXPLAINER
+(Everything you need to explain this idea in 2 minutes)
+
+
+THE ONE-LINER
+We watch the ground from space, and when someone starts digging where they
+shouldn't, we notice within days and alert the authorities automatically.
+
+WHY IT MATTERS
+Illegal mining is hard to catch - inspectors can't be everywhere, and by
+the time anyone visits, the damage is done. Rivers are polluted, forests
+are stripped, and government land is quietly taken. Our system makes the
+sky the inspector.
+
+HOW IT WORKS - THE ANALOGY
+Imagine photographing your garden every week. One week a patch is grass,
+the next week it's a hole. You don't need to be an expert to spot the
+difference - you just compare the two photos. We do this with satellite
+images of the whole state. When new digging appears, we measure how big it
+is, check what's nearby (a river? a forest? a protected zone?), and check
+whether the digging is allowed by a permit. All of this is scored 0-100 -
+the higher the score, the more urgent the alert.
+
+WHAT WE'RE BUILDING (simple pipeline)
+1. Satellite passes every 5-12 days, photos go into a storage lake.
+2. Software cleans the images (removes clouds, corrects the view).
+3. It computes "plant health" and "bare ground" signals from colors.
+4. It compares the newest image to the previous one - new pits, exposed
+   soil, access roads, trucks and excavators all get flagged.
+5. A risk engine adds up the evidence: excavation size + tree loss +
+   distance to river + overlap with protected land + no permit.
+6. Score 70+ = instant SMS to the district officer with map location.
+
+THE DEMO STORY
+A judge watches a mining pit appear between two satellite dates on a map.
+The system detects the new excavation, shows it's 85 m from a river and
+inside a forest buffer, finds no permit, scores it 87/100 HIGH - and an
+alert with location, area and evidence is generated for the officer.
+
+TECH, DECODED
+- Satellite images: free EU data (Sentinel-1 radar, Sentinel-2 optical).
+- NDVI: a "greenness score" of the ground from the photo's colors.
+- Change detection: subtracting old photo from new photo pixel by pixel.
+- U-Net / YOLO: the brains - one outlines regions, one spots objects.
+- Risk engine: a simple points system (like a driving license score).
+- PostGIS: a map-aware database that answers "what's near this spot?"
+
+KEY TALKING POINTS (say these with confidence)
+1. "Satellites catch digging within days - before inspectors can."
+2. "Multiple checks: area, vegetation loss, river/forest proximity,
+   permits - combined into one risk score out of 100."
+3. "Legal mining with a valid permit is automatically not flagged."
+4. "If no AI model is trained yet, the color-difference method still
+   works - the demo never depends on unavailable data."

@@ -147,3 +147,6 @@ def create_app():
         return render_dashboard(image=b"")
 
     return app
+
+
+app = create_app()

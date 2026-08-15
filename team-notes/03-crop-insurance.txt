@@ -1,0 +1,60 @@
+CROP HEALTH & MICRO-INSURANCE ENGINE - THE TEAM EXPLAINER
+(Everything you need to explain this idea in 2 minutes)
+
+
+THE ONE-LINER
+Every farm plot gets a satellite health check every week, and when a crop
+fails, the system builds an insurance claim's evidence automatically - but
+a human always approves the payment.
+
+WHY IT MATTERS
+Millions of farmers rely on crop insurance, but claims take months because
+someone must visit each damaged field to verify it. That's slow, costly
+and open to fraud. Our system verifies damage from space in days, and
+produces an evidence file insurers can trust.
+
+HOW IT WORKS - THE ANALOGY
+A doctor checks a child's height against a growth chart: "expected for
+your age" vs "actual". If the child is suddenly far below the line, the
+doctor investigates. We do this for crops. Satellites measure how green
+and healthy a plot is each week, we compare it to the expected growth
+curve for that crop in that district, and when the curve suddenly crashes
+below normal, we estimate how much yield was lost. The farmer just submits
+a claim - the satellite evidence is already waiting.
+
+WHAT WE'RE BUILDING (simple pipeline)
+1. Every farm plot becomes a shape on a map, linked to its farmer,
+   crop and insurance policy.
+2. Every 5 days a satellite passes; we compute each plot's greenness
+   score (cloud-free pixels only - no guessing through clouds).
+3. We compare to the expected curve built from 3+ years of history.
+4. A crash for two checkups in a row = damage detected; an ML model
+   estimates damage probability and yield loss %.
+5. A rules engine turns this into a recommendation:
+   auto-reject (tiny loss) / field verification (usual) / approve.
+6. The evidence package (health before, health after, loss %, weather
+   data, image count, confidence) goes to the insurer - human authority
+   signs off on every payout.
+
+THE DEMO STORY
+A judge opens a soybean plot: health 82% expected, 46% observed, estimated
+loss 44%, rainfall and moisture anomalies confirmed. The system generates
+a ready-to-send claim verification report with 12 satellite images as
+evidence - and marks it "field verification required" because a human must
+still confirm.
+
+TECH, DECODED
+- NDVI/NDMI: greenness and moisture scores from the satellite photo.
+- Baseline engine: the "growth chart" built from years of history.
+- XGBoost: a fast, explainable machine-learning model (trees that vote).
+- Rules engine: if/then insurance logic, not the AI, decides payouts.
+- Evidence package: the claim's proof folder, auto-generated.
+- TimescaleDB: a database built for time-series data like weekly scores.
+
+KEY TALKING POINTS (say these with confidence)
+1. "Claims verified in days from space instead of months on the ground."
+2. "We compare each plot to its own expected growth curve - we don't
+   guess, we measure deviation from normal."
+3. "The AI estimates damage; the rules engine recommends; a human
+   always approves payment - fraud-safe by design."
+4. "Farmers see one simple screen: my crop health, my risk, my claim."
